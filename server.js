@@ -48,6 +48,37 @@ app.delete('/todos/:id', function (req, res) {
     res.json(matchedTodo);
 });
 
+app.put('/todos/:id', function (req, res) {
+    var todoId = parseInt(req.params.id, 10);
+    var matchedTodo = _.findWhere(todos, {id: todoId});
+    var body = _.pick(req.body, 'description', 'completed');
+    var validAttributes = {};
+    
+    if (!matchedTodo) {
+        res.status(404).send();
+    }
+    
+    if (body.hasOwnProperty('completed') && _.isBoolean(body.completed)) {
+        validAttributes.completed = body.completed;
+    } else if (body.hasOwnProperty('completed')) {
+        return res.status(400).send();
+    } else {
+        //Never provided attribute, no issue here, nothing to update.
+    }
+    
+    if (body.hasOwnProperty('description') && _.isString(body.description) && body.description.trim().length > 0) {
+        validAttributes.description = body.description;
+    } else if (body.hasOwnProperty('description')) {
+        return res.status(400).send();
+    } else {
+        //Never provided attribute, no issue here, nothing to update.
+    }
+    
+    //since objects are passed by reference, there is no need to make matchedTodo = to _.extend();
+    _.extend(matchedTodo, validAttributes);
+    res.json(matchedTodo);
+});
+
 app.listen(port, function() {
-   console.log('exoress listening on port ' + port + '!') 
+   console.log('express listening on port ' + port + '!') 
 });
