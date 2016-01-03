@@ -38,6 +38,16 @@ app.post('/todos', function (req, res) {
     res.json(body);
 });
 
+app.delete('/todos/:id', function (req, res) {
+    var todoId = parseInt(req.params.id, 10);
+    var matchedTodo = _.findWhere(todos, {id: todoId});
+    if (!matchedTodo) {
+        res.status(404).send();
+    }
+    todos = _.without(todos, matchedTodo);
+    res.json(matchedTodo);
+});
+
 app.listen(port, function() {
    console.log('exoress listening on port ' + port + '!') 
 });
