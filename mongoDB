@@ -1,0 +1,30 @@
+db.createUser( { "user" : "sheff",
+                 "pwd": "password",
+                 "roles" : [ { role: "clusterAdmin", db: "admin" },
+                             { role: "readAnyDatabase", db: "admin" },
+                             "readWrite"
+                             ] },
+               { w: "majority" , wtimeout: 5000 } )
+
+db.createCollection('customers')
+
+db.customers.insert({ "firstname" : "John",
+            "lastname" : "Doe"})
+
+db.customers.insert([
+    { "firstname" : "Steven",
+      "lastname" : "Johnson"},
+    { "firstname" : "Bob",
+      "lastname" : "Ford"},
+    { "firstname" : "Jill",
+      "lastname" : "Swanson"}
+])
+
+db.customers.insert({ "firstname" : "John",
+            "lastname" : "Doe", "gender" : "male"});
+
+db.customers.insert({ "firstname" : "Jane",
+            "lastname" : "Smith", "gender" : "female"});
+
+db.customers.insert({ "firstname" : "Agent",
+            "lastname" : "Smith", "gender" : "male", "birthdate" : new Date('Sep 10, 1981')});
