@@ -19,7 +19,7 @@ app.get('/todos', function (req, res) {
     var where = {};
 
     if (query.hasOwnProperty('completed') && query.completed === 'true') {
-        where.complete = true;
+        where.completed = true;
     } else if (query.hasOwnProperty('completed') && query.completed === 'false') {
         where.completed = false;
     }
