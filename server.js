@@ -6,6 +6,7 @@ var app = express();
 var port = process.env.PORT || 7000;
 var todos = [];
 var todoNextId = 1;
+var bcrypt = require('bcrypt');
 
 //Parser middleware initialized at the begining of the applicaiton.
 app.use(bodyParser.json());
@@ -119,6 +120,18 @@ app.post('/users', function(req, res) {
         res.json(user.toPublicJSON());
     }, function(e) {
         res.status(400).json(e);
+    });
+});
+
+//POST /users/login
+app.post('/users/login', function(req, res) {
+    var body = _.pick(req.body, 'email', 'password');
+
+    db.user.authenticate(body)
+    .then(function(user) {
+        res.json(user.toPublicJSON());
+    }, function(e) {
+        res.status(401).send();
     });
 });
 
